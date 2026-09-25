@@ -1,4 +1,4 @@
-import { _decorator, Component, EventKeyboard, EventMouse, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, EventKeyboard, EventMouse, KeyCode, log, Node, Vec2, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { Camera } from 'cc';
@@ -6,12 +6,66 @@ import { Camera } from 'cc';
 @ccclass('Player_Input_System')
 export class Player_Input_System extends Component {
    
-    public isShooting: boolean = false;
+    public isShooting: boolean = false
 
-    public handleKeyDown(event:EventKeyboard): void {}
-    public handleKeyUp(event:EventKeyboard): void {}
-    public handleMouseDown(event:EventMouse): void {}
-    public handleMouseUp(event:EventMouse): void {}
+    private isUp: boolean = false
+    private isDown: boolean = false
+    private isLeft: boolean = false
+    private isRight: boolean = false
+
+    public handleKeyDown(event:EventKeyboard): void {
+        switch(event.keyCode){
+            case KeyCode.KEY_W:
+            case KeyCode.ARROW_UP:
+                this.isUp = true
+                log('System Recieved Up input')
+                break
+            case KeyCode.KEY_S:
+            case KeyCode.ARROW_DOWN:
+                this.isDown = true
+                log('System Recieved Down Input')
+                break
+            case KeyCode.KEY_A:
+            case KeyCode.ARROW_LEFT:
+                this.isLeft = true
+                log('System Recieved Left Input')
+                break
+            case KeyCode.KEY_D:
+            case KeyCode.ARROW_RIGHT:
+                this.isRight = true
+                log('System Recieved Right Input')
+                break
+        }
+    }
+    public handleKeyUp(event:EventKeyboard): void {
+        switch(event.keyCode){
+            case KeyCode.KEY_W:
+            case KeyCode.ARROW_UP:
+                this.isUp = false
+                break
+            case KeyCode.KEY_S:
+            case KeyCode.ARROW_DOWN:
+                this.isDown = false
+                break
+            case KeyCode.KEY_A:
+            case KeyCode.ARROW_LEFT:
+                this.isLeft = false
+                break
+            case KeyCode.KEY_D:
+            case KeyCode.ARROW_RIGHT:
+                this.isRight = false
+                break
+        }    }
+    public handleMouseDown(event:EventMouse): void {
+        if (event.getButton() === 0) {
+            this.isShooting = true
+            log('Input System Recieved: Trigger Down')
+        }
+    }
+    public handleMouseUp(event:EventMouse): void {
+        if (event.getButton() === 0) {
+            this.isShooting = false
+        }    }
     public handleMouseMove(event:EventMouse): void {}
 
     public getMoveDirection(): Vec2 {
