@@ -57,19 +57,19 @@ export class GameCTRL extends Component {
     }
 
     private OnkeyDown(event: EventKeyboard): void {
-        if (this.player) this.player.proccessKeyDown(event)    
+        if (this.player) this.player.proccessKeyDown(event);    
     }
     private OnkeyUp(event: EventKeyboard): void {
-        if (this.player) this.player.proccessKeyUp(event)    
+        if (this.player) this.player.proccessKeyUp(event);   
     }
     private onMouseMove(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseMove(event)    
+        if (this.player) this.player.proccessMouseMove(event);    
     }
     private OnMouseDown(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseDown(event)    
+        if (this.player) this.player.proccessMouseDown(event);    
     }
     private OnMouseUp(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseUp(event)    
+        if (this.player) this.player.proccessMouseUp(event);    
     }
 }
 

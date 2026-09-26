@@ -8,7 +8,7 @@ const { ccclass, property } = _decorator;
 export class Player extends Component {
     
     private inputSystem: Player_Input_System | null = null;
-    private eventSystem: Player_Movement_System | null = null;
+    private movementSystem: Player_Movement_System | null = null;
     private weaponSystem: Player_Weapon_System | null = null;
     private mainCamera: Camera | null = null;
 
@@ -21,24 +21,27 @@ export class Player extends Component {
     }
 
     protected update(deltaTime: number) {
-        
+        if (this.inputSystem && this.movementSystem ) {
+           let moveDir = this.inputSystem.getMoveDirection();
+           this.movementSystem.updateMovement(moveDir); 
+        }
     }
 
     public proccessKeyDown(event: EventKeyboard): void {
-        if (this.inputSystem) this.inputSystem.handleKeyDown(event)
+        if (this.inputSystem) this.inputSystem.handleKeyDown(event);
     }
     public proccessKeyUp(event: EventKeyboard): void {
-        if (this.inputSystem) this.inputSystem.handleKeyUp(event)
+        if (this.inputSystem) this.inputSystem.handleKeyUp(event);
 
     }
     public proccessMouseDown(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseDown(event)
+        if (this.inputSystem) this.inputSystem.handleMouseDown(event);
     }
     public proccessMouseUp(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseUp(event)
+        if (this.inputSystem) this.inputSystem.handleMouseUp(event);
     }
     public proccessMouseMove(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseMove(event)
+        if (this.inputSystem) this.inputSystem.handleMouseMove(event);
     }
 
 }
