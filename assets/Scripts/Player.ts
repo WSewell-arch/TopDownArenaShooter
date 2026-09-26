@@ -41,7 +41,13 @@ export class Player extends Component {
         if (this.inputSystem) this.inputSystem.handleMouseUp(event);
     }
     public proccessMouseMove(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseMove(event);
+        if (this.inputSystem && this.movementSystem && this.mainCamera){
+            let targetAngle = this.inputSystem.handleMouseMove(event,
+                this.mainCamera, this.node.getWorldPosition()
+            )
+
+            this.movementSystem.updateRotation(targetAngle)
+        }
     }
 
 }
