@@ -3,6 +3,7 @@ const { ccclass, property } = _decorator;
 
 import { Player } from './Player';
 import { Camera } from 'cc';
+import { PISTOL } from './WeaponConfig';
 
 
 @ccclass('GameCTRL')
@@ -35,6 +36,10 @@ export class GameCTRL extends Component {
     start() {
         if (this.player && this.camera) {
             this.player.initialize(this.camera);
+        }
+
+        if (this.player && this.defaultBulletPrefab && this.bulletContainer) {
+            this.player.initializeWeapon(PISTOL, this.defaultBulletPrefab, this.bulletContainer)
         }
 
         input.on(Input.EventType.KEY_DOWN, this.OnkeyDown, this);
