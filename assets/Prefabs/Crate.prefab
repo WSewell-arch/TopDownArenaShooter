@@ -204,7 +204,7 @@
     "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
-    "_group": 1,
+    "_group": 32,
     "_type": 2,
     "_allowSleep": true,
     "_gravityScale": 1,
@@ -236,7 +236,7 @@
       "__id__": 10
     },
     "tag": 0,
-    "_group": 1,
+    "_group": 32,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -307,6 +307,7 @@
       "__id__": 0
     },
     "fileId": "b8ScWkBkBEuKzeO3ko4ZFO",
+    "instance": null,
     "targetOverrides": null
   }
 ]

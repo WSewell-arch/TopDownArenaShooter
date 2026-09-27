@@ -13,7 +13,7 @@ export class Player_Weapon_System extends Component {
 
     public equipeWeapon(config: WeaponConfig, bulletPrefab: Prefab, bulletContainer: Node, playerNode : Node): void {
         if (this.currentWeaponNode) this.currentWeaponNode.destroy()
-        this.currentWeaponNode = Weapon_Factory.createWeapon(config, bulletPrefab, playerNode, bulletContainer)
+        this.currentWeaponNode = Weapon_Factory.createWeapon(config, bulletPrefab, playerNode, bulletContainer, true)
         this.currentWeapon = this.currentWeaponNode.getComponent(Weapon)
     }
 
