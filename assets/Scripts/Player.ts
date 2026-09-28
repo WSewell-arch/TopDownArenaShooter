@@ -40,18 +40,18 @@ export class Player extends Component {
     }
 
     public proccessKeyDown(event: EventKeyboard): void {
-        if (this.inputSystem) this.inputSystem.handleKeyDown(event);
+        if (this.inputSystem) this.inputSystem.handleKeyDown(event)
     }
     public proccessKeyUp(event: EventKeyboard): void {
-        if (this.inputSystem) this.inputSystem.handleKeyUp(event);
+        if (this.inputSystem) this.inputSystem.handleKeyUp(event)
 
     }
     public proccessMouseDown(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseDown(event);
+        if (this.inputSystem) this.inputSystem.handleMouseDown(event)
         if (this.weaponSystem) this.weaponSystem.triggerSingleShot(this.node.angle)
     }
     public proccessMouseUp(event: EventMouse): void {
-        if (this.inputSystem) this.inputSystem.handleMouseUp(event);
+        if (this.inputSystem) this.inputSystem.handleMouseUp(event)
     }
     public proccessMouseMove(event: EventMouse): void {
         if (this.inputSystem && this.movementSystem && this.mainCamera){

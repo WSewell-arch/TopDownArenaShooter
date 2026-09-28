@@ -42,19 +42,19 @@ export class GameCTRL extends Component {
             this.player.initializeWeapon(PISTOL, this.defaultBulletPrefab, this.bulletContainer)
         }
 
-        input.on(Input.EventType.KEY_DOWN, this.OnkeyDown, this);
-        input.on(Input.EventType.KEY_UP, this.OnkeyUp, this);
-        input.on(Input.EventType.MOUSE_MOVE, this.onMouseMove, this);
-        input.on(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this);
-        input.on(Input.EventType.MOUSE_UP, this.OnMouseUp, this);
+        input.on(Input.EventType.KEY_DOWN, this.OnkeyDown, this)
+        input.on(Input.EventType.KEY_UP, this.OnkeyUp, this)
+        input.on(Input.EventType.MOUSE_MOVE, this.onMouseMove, this)
+        input.on(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this)
+        input.on(Input.EventType.MOUSE_UP, this.OnMouseUp, this)
     }
 
     protected onDestroy(): void {
-        input.off(Input.EventType.KEY_DOWN, this.OnkeyDown, this);
-        input.off(Input.EventType.KEY_UP, this.OnkeyUp, this);
-        input.off(Input.EventType.MOUSE_MOVE, this.onMouseMove, this);
-        input.off(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this);
-        input.off(Input.EventType.MOUSE_UP, this.OnMouseUp, this);
+        input.off(Input.EventType.KEY_DOWN, this.OnkeyDown, this)
+        input.off(Input.EventType.KEY_UP, this.OnkeyUp, this)
+        input.off(Input.EventType.MOUSE_MOVE, this.onMouseMove, this)
+        input.off(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this)
+        input.off(Input.EventType.MOUSE_UP, this.OnMouseUp, this)
     }
 
     update(deltaTime: number) {
@@ -62,19 +62,19 @@ export class GameCTRL extends Component {
     }
 
     private OnkeyDown(event: EventKeyboard): void {
-        if (this.player) this.player.proccessKeyDown(event);    
+        if (this.player) this.player.proccessKeyDown(event)   
     }
     private OnkeyUp(event: EventKeyboard): void {
-        if (this.player) this.player.proccessKeyUp(event);   
+        if (this.player) this.player.proccessKeyUp(event)
     }
     private onMouseMove(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseMove(event);    
+        if (this.player) this.player.proccessMouseMove(event)    
     }
     private OnMouseDown(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseDown(event);    
+        if (this.player) this.player.proccessMouseDown(event)   
     }
     private OnMouseUp(event: EventMouse): void {
-        if (this.player) this.player.proccessMouseUp(event);    
+        if (this.player) this.player.proccessMouseUp(event)    
     }
 }
 

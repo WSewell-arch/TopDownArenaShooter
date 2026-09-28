@@ -19,44 +19,44 @@ export class Player_Input_System extends Component {
         switch(event.keyCode){
             case KeyCode.KEY_W:
             case KeyCode.ARROW_UP:
-                this.isUp = true;
-                log('System Recieved Up input');
-                break;
+                this.isUp = true
+                console.log("System Recieved Up input")
+                break
             case KeyCode.KEY_S:
             case KeyCode.ARROW_DOWN:
-                this.isDown = true;
-                log('System Recieved Down Input');
-                break;
+                this.isDown = true
+                console.log("System Recieved Down Input")
+                break
             case KeyCode.KEY_A:
             case KeyCode.ARROW_LEFT:
-                this.isLeft = true;
-                log('System Recieved Left Input');
-                break;
+                this.isLeft = true
+                console.log("System Recieved Left Input")
+                break
             case KeyCode.KEY_D:
             case KeyCode.ARROW_RIGHT:
-                this.isRight = true;
-                log('System Recieved Right Input');
-                break;
+                this.isRight = true
+                console.log("System Recieved Right Input")
+                break
         }
     }
     public handleKeyUp(event:EventKeyboard): void {
         switch(event.keyCode){
             case KeyCode.KEY_W:
             case KeyCode.ARROW_UP:
-                this.isUp = false;
-                break;
+                this.isUp = false
+                break
             case KeyCode.KEY_S:
             case KeyCode.ARROW_DOWN:
-                this.isDown = false;
-                break;
+                this.isDown = false
+                break
             case KeyCode.KEY_A:
             case KeyCode.ARROW_LEFT:
-                this.isLeft = false;
-                break;
+                this.isLeft = false
+                break
             case KeyCode.KEY_D:
             case KeyCode.ARROW_RIGHT:
-                this.isRight = false;
-                break;
+                this.isRight = false
+                break
         }    }
     public handleMouseDown(event:EventMouse): void {
         if (event.getButton() === 0) {
