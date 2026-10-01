@@ -3,7 +3,7 @@ const { ccclass, property } = _decorator;
 
 import { Player } from './Player';
 import { Camera } from 'cc';
-import { PISTOL } from './WeaponConfig';
+import { DOUBLE_GUN, FORWARD_REAR_PISTOL, PISTOL, SPREAD_GUN } from './WeaponConfig';
 
 
 @ccclass('GameCTRL')
@@ -48,6 +48,10 @@ export class GameCTRL extends Component {
         input.on(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this)
         input.on(Input.EventType.MOUSE_UP, this.OnMouseUp, this)
 
+        if (this.player) {
+            this.player.node.on('WeaponSelect', this.handleWeaponSwap, this)
+        }
+
     }
 
     protected onDestroy(): void {
@@ -56,6 +60,10 @@ export class GameCTRL extends Component {
         input.off(Input.EventType.MOUSE_MOVE, this.onMouseMove, this)
         input.off(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this)
         input.off(Input.EventType.MOUSE_UP, this.OnMouseUp, this)
+
+        if (this.player) {
+            this.player.node.off('WeaponSelect', this.handleWeaponSwap, this)
+        }
     }
 
     update(deltaTime: number) {
@@ -76,6 +84,24 @@ export class GameCTRL extends Component {
     }
     private OnMouseUp(event: EventMouse): void {
         if (this.player) this.player.proccessMouseUp(event)    
+    }
+
+    private handleWeaponSwap(weaponIndex: number) {
+        switch(weaponIndex) {
+            case 1:
+                this.player.initializeWeapon(PISTOL, this.defaultBulletPrefab, this.bulletContainer)
+                break
+            case 2:
+                this.player.initializeWeapon(DOUBLE_GUN, this.defaultBulletPrefab, this.bulletContainer)
+                break
+            case 3:
+                this.player.initializeWeapon(FORWARD_REAR_PISTOL, this.defaultBulletPrefab, this.bulletContainer)
+                break
+            case 4:
+                this.player.initializeWeapon(SPREAD_GUN, this.defaultBulletPrefab, this.bulletContainer)
+                break
+                
+        }
     }
 }
 

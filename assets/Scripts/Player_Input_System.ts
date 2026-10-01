@@ -38,6 +38,18 @@ export class Player_Input_System extends Component {
                 this.isRight = true
                 console.log("System Recieved Right Input")
                 break
+            case KeyCode.DIGIT_1:
+                this.node.emit('WeaponSelect', 1)
+                break
+            case KeyCode.DIGIT_2:
+                this.node.emit('WeaponSelect', 2)
+                break
+            case KeyCode.DIGIT_3:
+                this.node.emit('WeaponSelect', 3)
+                break
+            case KeyCode.DIGIT_4:
+                this.node.emit('WeaponSelect', 4)
+                break
         }
     }
     public handleKeyUp(event:EventKeyboard): void {
