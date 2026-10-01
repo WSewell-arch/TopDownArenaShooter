@@ -35,7 +35,7 @@ export class Weapon extends Component {
         this.damageAmount = config.damageAmount
         this.burstCount = config.burstCount ?? 0
         this.burstDelay = config.burstDelay ?? 0
-        isPlayerWeapon = isPlayerWeapon
+        this.isPlayerWeapon = isPlayerWeapon
 
         this.setUpObjectPool(config);
         this.setUpBarrels(config);
