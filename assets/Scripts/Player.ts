@@ -8,10 +8,16 @@ const { ccclass, property } = _decorator;
 @ccclass('Player')
 export class Player extends Component {
     
-    private inputSystem: Player_Input_System | null = null;
-    private movementSystem: Player_Movement_System | null = null;
+    private inputSystem: Player_Input_System | null = null
+    private movementSystem: Player_Movement_System | null = null
     private weaponSystem: Player_Weapon_System | null = null;
     private mainCamera: Camera | null = null;
+
+    protected onLoad(): void {
+        this.inputSystem = this.getComponent(Player_Input_System)
+        this.movementSystem = this.getComponent(Player_Movement_System)
+        this.weaponSystem = this.getComponent(Player_Weapon_System)
+    }
 
     public initialize(camera: Camera): void {
         this.mainCamera = camera;

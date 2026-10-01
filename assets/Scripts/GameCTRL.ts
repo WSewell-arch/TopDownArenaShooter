@@ -47,6 +47,7 @@ export class GameCTRL extends Component {
         input.on(Input.EventType.MOUSE_MOVE, this.onMouseMove, this)
         input.on(Input.EventType.MOUSE_DOWN, this.OnMouseDown, this)
         input.on(Input.EventType.MOUSE_UP, this.OnMouseUp, this)
+
     }
 
     protected onDestroy(): void {

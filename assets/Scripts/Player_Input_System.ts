@@ -6,6 +6,7 @@ import { Camera } from 'cc';
 @ccclass('Player_Input_System')
 export class Player_Input_System extends Component {
    
+    
     public isShooting: boolean = false;
 
     private isUp: boolean = false;
