@@ -1,42 +1,67 @@
-import { _decorator, Component, EventKeyboard, EventMouse, KeyCode, log, math, Node, Vec2, Vec3 } from 'cc';
+import { _decorator, Component, EventKeyboard, EventMouse, Input, input, KeyCode, log, math, Node, Vec2, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { Camera } from 'cc';
+import { IInputSystem } from './IInputSystem';
 
 @ccclass('Player_Input_System')
-export class Player_Input_System extends Component {
+export class Player_Input_System extends Component implements IInputSystem{
+
    
     
+    private camera : Camera | null = null
+    private targetAngle: number = 0
+    private moveDir: Vec2 = new Vec2
+
     public isShooting: boolean = false;
+    public singleShotQueued: boolean = false
 
     private isUp: boolean = false;
     private isDown: boolean = false;
     private isLeft: boolean = false;
     private isRight: boolean = false;
 
-    private moveDir: Vec2 = new Vec2;
+
+    protected onLoad(): void {
+        input.on(Input.EventType.KEY_DOWN, this.handleKeyDown, this)
+        input.on(Input.EventType.KEY_UP, this.handleKeyUp, this)
+        input.on(Input.EventType.MOUSE_DOWN, this.handleMouseDown, this)
+        input.on(Input.EventType.MOUSE_UP, this.handleMouseUp, this)
+        input.on(Input.EventType.MOUSE_MOVE, this.handleMouseMove, this)
+    }
+
+    public initalize(camera: Camera) {
+        this.camera = camera
+    }
+
+    protected onDestroy(): void {
+        input.off(Input.EventType.KEY_DOWN, this.handleKeyDown, this)
+        input.off(Input.EventType.KEY_UP, this.handleKeyUp, this)
+        input.off(Input.EventType.MOUSE_DOWN, this.handleMouseDown, this)
+        input.off(Input.EventType.MOUSE_UP, this.handleMouseUp, this)
+        input.off(Input.EventType.MOUSE_MOVE, this.handleMouseMove, this)    }
 
     public handleKeyDown(event:EventKeyboard): void {
         switch(event.keyCode){
             case KeyCode.KEY_W:
             case KeyCode.ARROW_UP:
                 this.isUp = true
-                console.log("System Recieved Up input")
+                //.log("System Recieved Up input")
                 break
             case KeyCode.KEY_S:
             case KeyCode.ARROW_DOWN:
                 this.isDown = true
-                console.log("System Recieved Down Input")
+                //console.log("System Recieved Down Input")
                 break
             case KeyCode.KEY_A:
             case KeyCode.ARROW_LEFT:
                 this.isLeft = true
-                console.log("System Recieved Left Input")
+                //console.log("System Recieved Left Input")
                 break
             case KeyCode.KEY_D:
             case KeyCode.ARROW_RIGHT:
                 this.isRight = true
-                console.log("System Recieved Right Input")
+               // console.log("System Recieved Right Input")
                 break
             case KeyCode.DIGIT_1:
                 this.node.emit('WeaponSelect', 1)
@@ -51,6 +76,8 @@ export class Player_Input_System extends Component {
                 this.node.emit('WeaponSelect', 4)
                 break
         }
+
+        this.calculateMoveDirection()
     }
     public handleKeyUp(event:EventKeyboard): void {
         switch(event.keyCode){
@@ -74,33 +101,55 @@ export class Player_Input_System extends Component {
     public handleMouseDown(event:EventMouse): void {
         if (event.getButton() === 0) {
             this.isShooting = true;
-            log('Input System Recieved: Trigger Down');
+            this.singleShotQueued = true
+           // log('Input System Recieved: Trigger Down');
         }
+        
+        this.calculateMoveDirection()
     }
     public handleMouseUp(event:EventMouse): void {
         if (event.getButton() === 0) {
             this.isShooting = false;
         }    }
-    public handleMouseMove(event:EventMouse, camera: Camera, playerPos: Readonly<Vec3>): number {
-        return this.calculateRotationAngle(event, camera, playerPos)
+    public handleMouseMove(event:EventMouse) {
+         this.CalculateRoationAngle(event)
     }
 
     public getMoveDirection(): Vec2 {
-        this.moveDir.x = (this.isRight ? 1: 0) - (this.isLeft ? 1: 0);
-        this.moveDir.y = (this.isUp ? 1:0) - (this.isDown ? 1:0);
-        this.moveDir.normalize();
         return this.moveDir;
     }
 
-    public calculateRotationAngle(event: EventMouse, camera: Camera, playerPos: Readonly<Vec3>) : number {
+    private calculateMoveDirection() {
+        this.moveDir.x = (this.isRight ? 1:0) - (this.isLeft ? 1:0)
+        this.moveDir.y = (this.isUp ? 1:0) - (this.isDown ? 1:0)
+        this.moveDir.normalize()
+    }
+
+    private CalculateRoationAngle(event: EventMouse) {
+        if (!this.camera) return
+
         let mouseScreenPos = event.getLocation()
         let mouseWorldPos = new Vec3
-        camera.screenToWorld(new Vec3(mouseScreenPos.x, mouseScreenPos.y, 0), mouseWorldPos)
+        this.camera.screenToWorld(new Vec3(mouseScreenPos.x, mouseScreenPos.y, 0),
+            mouseWorldPos)
+        let currentPos = this.node.worldPosition
 
-        let dx = mouseWorldPos.x - playerPos.x
-        let dy = mouseWorldPos.y - playerPos.y
+        let dx = mouseWorldPos.x - currentPos.x
+        let dy = mouseWorldPos.y -  currentPos.y
 
-        return math.toDegree(Math.atan2(dy, dx));
+        this.targetAngle = math.toDegree(Math.atan2(dy, dx))
+    }
+
+    public getRoationAngle(): number {
+        return this.targetAngle
+    }
+
+    public getSingleShotIntent(): boolean {
+        if (this.singleShotQueued) {
+            this.singleShotQueued = false
+            return true
+        }
+        return false
     }
 }
 
