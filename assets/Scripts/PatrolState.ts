@@ -1,6 +1,7 @@
 import { Vec2 } from "cc";
 import { Enemy_Input_System } from "./Enemy_Input_System";
 import { IState } from "./IState";
+import { ChaseState } from "./ChaseState";
 
 export class PatrolState implements IState {
     enter(brain: Enemy_Input_System): void {
@@ -9,6 +10,12 @@ export class PatrolState implements IState {
     execute(brain: Enemy_Input_System, dt: number): void {
         
         let myPos = new Vec2(brain.node.worldPosition.x, brain.node.worldPosition.y)
+
+        if (brain.getDistanceToPlayer(myPos) < brain.spotPlayerDistance) {
+            brain.changeState(brain.chaseState)
+            return
+        }
+
         if (brain.wander.hasArrived(myPos)) {
             brain.wander.pickNewWanderPoint()
             brain.changeState(brain.arriveState)
