@@ -1,4 +1,4 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, find, Node } from 'cc';
 import { Enemy_Input_System } from './Enemy_Input_System';
 import { Enemy_Movement_System } from './Enemy_Movement_System';
 import { HealthSystem } from './HealthSystem';
@@ -10,6 +10,7 @@ export class Enemy extends Component {
     private inputSystem: Enemy_Input_System | null = null
     private movementSystem: Enemy_Movement_System | null = null
     private healthSystem: HealthSystem | null = null
+    private targetNode: Node | null = null
 
     protected onLoad(): void {
         this.inputSystem = this.getComponent(Enemy_Input_System)
@@ -18,6 +19,11 @@ export class Enemy extends Component {
 
         if (this.healthSystem) {
             this.healthSystem.initialize(20)
+        }
+
+        if (this.inputSystem) {
+        this.targetNode = find("Canvas/Player")
+        this.inputSystem.initialize(this.targetNode)
         }
     }
     
@@ -30,6 +36,16 @@ export class Enemy extends Component {
             if (this.healthSystem.isDead) {
                 this.node.destroy()
             }
+        }
+
+        if (this.inputSystem && this.movementSystem && this.targetNode ) {
+            
+            let moveDir = this.inputSystem.getMoveDirection()
+
+            this.movementSystem.updateMovement(moveDir)
+
+            let targetAngle = this.inputSystem.getRoationAngle()
+            this.movementSystem.updateRotation(targetAngle)
         }
     }
 }
