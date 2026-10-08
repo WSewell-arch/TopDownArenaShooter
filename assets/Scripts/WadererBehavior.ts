@@ -1,6 +1,8 @@
 import { math, Vec2 } from "cc";
 import { ISteeringBehavior } from "./ISteeringBehavior";
 import { SeekBehavior } from "./SeekBehavior";
+import { IntentSteeringBehavior } from "./IntentSteeringBehavior";
+import { IntentConfig } from "./EnemyConfig";
 
 export class WadererBehavior implements ISteeringBehavior {
     
@@ -8,9 +10,19 @@ export class WadererBehavior implements ISteeringBehavior {
     private currentWayPointsIndex: number = 0
     private wayPointThreshold: number = 10
 
-    private seekBehavior: SeekBehavior = new SeekBehavior()
+    //private seekBehavior: SeekBehavior = new SeekBehavior()
+    private compositeIntent: IntentSteeringBehavior = new IntentSteeringBehavior()
 
-    public setWayPoints(points: Vec2[]) {
+    public init(points: Vec2[], intent: IntentConfig) {
+        this.setWayPoints(points)
+        this.setWeights(intent)
+    }
+    
+    private setWeights(intent: IntentConfig) {
+        this.compositeIntent.setWeights(intent)
+    }
+
+    private setWayPoints(points: Vec2[]) {
         this.wayPoints = points
         this.pickNewWanderPoint()
     }
@@ -34,7 +46,7 @@ export class WadererBehavior implements ISteeringBehavior {
         if (this.wayPoints.length === 0) return Vec2.ZERO
 
         let currentTarget = this.wayPoints[this.currentWayPointsIndex]
-        return this.seekBehavior.getDesiredVelocity(currentPostion, currentTarget)
+        return this.compositeIntent.getDesiredVelocity(currentPostion, currentTarget)
     }
 }
 

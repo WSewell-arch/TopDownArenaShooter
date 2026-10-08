@@ -2,14 +2,22 @@ import { _decorator, Component, find, Node, Vec2 } from 'cc';
 import { Enemy_Input_System } from './Enemy_Input_System';
 import { Enemy_Movement_System } from './Enemy_Movement_System';
 import { HealthSystem } from './HealthSystem';
+import { IntentConfig } from './EnemyConfig';
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
 export class Enemy extends Component {
+
+    @property({ group: 'Intent Weights', slide: true, range: [0, 5, 0.1]})
+    public seekWeight: number = 1.0
+
+    @property({ group: 'Intent Weights', slide: true, range: [0, 5, 0.1]})
+    public fleeWeight: number = 0.0
     
     private inputSystem: Enemy_Input_System | null = null
     private movementSystem: Enemy_Movement_System | null = null
     private healthSystem: HealthSystem | null = null
+    private intentConfig: IntentConfig
     private targetNode: Node | null = null
 
     protected onLoad(): void {
@@ -21,7 +29,10 @@ export class Enemy extends Component {
             this.healthSystem.initialize(20)
         }
 
-
+        this.intentConfig = {
+            seekWeight: this.seekWeight,
+            fleeWeight: this.fleeWeight,
+        }
     }
     
     start() {
@@ -30,7 +41,7 @@ export class Enemy extends Component {
             let wanderPoints = this.node.getParent().getChildByName("WandereNodes").children.map(
                 child => new Vec2(child.worldPosition.x, child.worldPosition.y)
             )
-            this.inputSystem.initialize(this.targetNode, wanderPoints)
+            this.inputSystem.initialize(this.targetNode, wanderPoints, this.intentConfig)
         }    
     }
 
