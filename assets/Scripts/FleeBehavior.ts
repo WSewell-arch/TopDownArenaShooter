@@ -1,0 +1,18 @@
+import { math, Vec2 } from "cc";
+import { IState } from "./IState";
+import { ISteeringBehavior } from "./ISteeringBehavior";
+
+export class FleeBehavior implements ISteeringBehavior {
+    getDesiredVelocity(currentPostion: math.Vec2, targetPosition?: Readonly<math.Vec2>): math.Vec2 {
+        
+        let desiredDir = new Vec2
+
+        if(!targetPosition) return Vec2.ZERO
+
+        Vec2.subtract(desiredDir, currentPostion, targetPosition)
+        return desiredDir.normalize()
+    }
+    
+}
+
+

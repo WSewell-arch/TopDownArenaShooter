@@ -57,6 +57,12 @@ export class Enemy_Movement_System extends Component {
         return force
     }
 
+    public isMovingSlowly(): boolean {
+        if (!this.rigidBody) return true
+        //log(this.rigidBody.linearVelocity.lengthSqr() < 50)
+        return this.rigidBody.linearVelocity.lengthSqr() < 10
+    }
+
 
 }
 
