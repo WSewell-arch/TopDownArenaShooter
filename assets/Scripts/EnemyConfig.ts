@@ -1,3 +1,4 @@
+import { Vec2 } from "cc"
 
 export interface IntentConfig {
     seekWeight: number
@@ -5,9 +6,23 @@ export interface IntentConfig {
     // pursuitWeight: number
 }
 
+export interface WhiskersConfig {
+    startPos: Vec2,
+    angle: number,
+    length: number    
+}
+
+export interface FlockingWeights {
+    seperationWeight: number
+    alignmentWeight: number
+    cohesionWeight: number
+}
+
 export interface MovementConfig {
     maxSpeed: number
     maxTurnForce: number
+    //whiskers: WhiskersConfig[]
+    //flocking: FlockingWeights
 }
 
 export interface EnemyConfig {
