@@ -588,7 +588,7 @@
     "__prefab": {
       "__id__": 25
     },
-    "enabledContactListener": true,
+    "enabledContactListener": false,
     "bullet": false,
     "awakeOnLoad": true,
     "_group": 4,
@@ -657,7 +657,8 @@
     "maxSpeed": 4,
     "maxTurnForce": 0.2,
     "avoidWeight": 3,
-    "seperationWeight": 0,
+    "seperationWeight": 3,
+    "seperationRadius": 100,
     "alignmentWeight": 0,
     "cohesionWeight": 0,
     "_id": ""
