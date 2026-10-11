@@ -21,8 +21,9 @@ export interface FlockingWeights {
 export interface MovementConfig {
     maxSpeed: number
     maxTurnForce: number
-    //whiskers: WhiskersConfig[]
-    //flocking: FlockingWeights
+    avoidWeight: number
+    whiskers: WhiskersConfig[]
+    flocking: FlockingWeights
 }
 
 export interface EnemyConfig {
