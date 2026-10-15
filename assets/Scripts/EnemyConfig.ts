@@ -32,6 +32,8 @@ export interface MovementConfig {
 }
 
 export interface EnemyConfig {
+    scale: Vec2
+    health: number
     Intent: IntentConfig
     moving: MovementConfig
 }

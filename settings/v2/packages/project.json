@@ -39,5 +39,14 @@
       "5": 14,
       "6": 26
     }
+  },
+  "general": {
+    "designResolution": {
+      "width": 960,
+      "height": 640
+    }
+  },
+  "script": {
+    "preserveSymlinks": true
   }
 }
