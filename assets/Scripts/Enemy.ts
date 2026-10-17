@@ -1,4 +1,4 @@
-import { _decorator, Component, find, Node, Vec2 } from 'cc';
+import { _decorator, Component, find, JsonAsset, Node, Vec2 } from 'cc';
 import { Enemy_Input_System } from './Enemy_Input_System';
 import { Enemy_Movement_System } from './Enemy_Movement_System';
 import { HealthSystem } from './HealthSystem';
@@ -18,11 +18,25 @@ export class Enemy extends Component {
     private movementConfig: MovementConfig
 
     private targetNode: Node | null = null
-    node: any;
+    private configLoaded: boolean = false
+
+    @property({ type:JsonAsset})
+    public testConfigFile: JsonAsset | null = null
+    //node: any;
 
     protected onLoad(): void {
 
         Enemy.activeEnemies.push(this)
+    }
+
+    protected start(): void {
+        if (this.testConfigFile && this.testConfigFile.json) {
+            let configData = this.testConfigFile.json as unknown as EnemyConfig
+            console.log(`[Enemy] Reading Configuration form ${this.testConfigFile.name}`)
+            this.init(configData)
+        } else {
+            console.log('[Enemy] Has no Config file attached')
+        }
     }
 
     public init(enemyConfig: EnemyConfig){
