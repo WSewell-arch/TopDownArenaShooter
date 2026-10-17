@@ -1,7 +1,8 @@
 import { _decorator, CCFloat, Component, director, math, Node, Vec2 } from 'cc';
 import { EnemyConfig, WhiskersConfig } from './EnemyConfig';
 import { Enemy } from './Enemy';
-const { ccclass, property } = _decorator;
+import { EDITOR } from 'cc/env';
+const { ccclass, property, executeInEditMode} = _decorator;
 
 @ccclass('WhiskerconfigEditor')
 export class WhiskerConfigEditor implements WhiskersConfig {
@@ -17,6 +18,7 @@ export class WhiskerConfigEditor implements WhiskersConfig {
 }
 
 @ccclass('EnemyConfigTool')
+@executeInEditMode
 export class EnemyConfigTool extends Component {
     @property({ group: 'Enemy Base'})
     public scale: Vec2 = new Vec2(1, 1)
@@ -103,7 +105,21 @@ export class EnemyConfigTool extends Component {
             w.length = 50
             return w
         }) (),
-    ]
+        ]
+        
+    
+
+    @property({group: "Export Config"})
+    public configNamePrefix: string = 'Swarm'
+
+    @property({group: "Export Config", tooltip: 'Export JSON'})
+    get generateJSONFile(): boolean {
+        return false
+    }
+
+    set generateJSONFile(value: boolean) {
+        if (value) this.generateJSON()
+    }
 
     private enemyConfig: EnemyConfig
 
@@ -137,7 +153,7 @@ export class EnemyConfigTool extends Component {
 
         let scene = director.getScene()
         if (scene) {
-            let allEnemies = scene.getComponentInChildren(Enemy)
+            let allEnemies = scene.getComponentsInChildren(Enemy)
 
             for (let enemy of allEnemies) {
                 enemy.init(this.enemyConfig)
@@ -145,6 +161,42 @@ export class EnemyConfigTool extends Component {
         }
 
         
+    }
+
+    private generateJSON() {
+        let exportData = this.enemyConfig
+
+        let jsonString = JSON.stringify(exportData, null, 4)
+        let fileName = `${this.configNamePrefix}_enemyConfig.json`
+
+        if (EDITOR) {
+            try {
+                const fs = globalThis.require('fs')
+                const path = globalThis.require('path')
+
+                // @ts-ignore
+                const projectPath = EDITOR.Project.path
+                const saveDir = path.join(projectPath, 'assets', 'Configs')
+
+                if (!fs.existsSync(saveDir)) {
+                    fs.mkdirSync(saveDir, {recursive: true})
+                }
+
+                const savePath = path.join(saveDir, fileName)
+                fs.writeFileSync(savePath, jsonString)
+
+                let dbURL = 'db://assets/Configs/${fileName}'
+                if (globalThis.Editor && globalThis.Editor.Message) {
+                    globalThis.Editor.Message.request('asset-db', 'refresh-asset', dbURL)
+                } else {
+                    console.log('[Config Tool] Editor-Message IPC Not Accessible from this scene Process')
+                }
+
+                console.log(`[Config Tool] Exported Config to ${savePath}`)
+            } catch (error) {
+                console.error('[Config Tool] Node.js save failed', error)
+            }
+        }
     }
 }
 
