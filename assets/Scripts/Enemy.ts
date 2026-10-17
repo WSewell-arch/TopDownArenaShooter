@@ -30,6 +30,7 @@ export class Enemy extends Component {
     }
 
     protected start(): void {
+        if (!this.configLoaded){
         if (this.testConfigFile && this.testConfigFile.json) {
             let configData = this.testConfigFile.json as unknown as EnemyConfig
             console.log(`[Enemy] Reading Configuration form ${this.testConfigFile.name}`)
@@ -37,7 +38,9 @@ export class Enemy extends Component {
         } else {
             console.log('[Enemy] Has no Config file attached')
         }
+        }
     }
+
 
     public init(enemyConfig: EnemyConfig){
         if (!this.inputSystem) {
