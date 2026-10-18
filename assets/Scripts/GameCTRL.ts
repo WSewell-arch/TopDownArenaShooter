@@ -4,6 +4,7 @@ const { ccclass, property } = _decorator;
 import { Player } from './Player';
 import { Camera } from 'cc';
 import { DOUBLE_GUN, FORWARD_REAR_PISTOL, PISTOL, SPREAD_GUN } from './WeaponConfig';
+import { EventBus, GameEvents } from './EventBus';
 
 
 @ccclass('GameCTRL')
@@ -33,6 +34,10 @@ export class GameCTRL extends Component {
     })
     public bulletContainer: Node | null = null;
     
+    protected onLoad(): void {
+        EventBus.on(GameEvents.WEAPON_SWAP, this.handleWeaponSwap, this)
+    }
+    
     start() {
         if (this.player && this.camera) {
             this.player.initialize(this.camera);
@@ -43,17 +48,12 @@ export class GameCTRL extends Component {
         }
 
 
-        if (this.player) {
-            this.player.node.on('WeaponSelect', this.handleWeaponSwap, this)
-        }
+        
 
     }
 
-    protected onDestroy(): void {
-       
-        if (this.player) {
-            this.player.node.off('WeaponSelect', this.handleWeaponSwap, this)
-        }
+    protected onDestroy(): void {    
+        EventBus.off(GameEvents.WEAPON_SWAP, this.handleWeaponSwap, this)
     }
 
     update(deltaTime: number) {
