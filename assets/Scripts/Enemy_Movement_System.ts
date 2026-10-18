@@ -1,7 +1,8 @@
-import { _decorator, Component, Graphics, math, Node, RigidBody2D, Vec2 } from 'cc';
+import { _decorator, Component, Graphics, isValid, math, Node, RigidBody2D, Vec2 } from 'cc';
 import { MovementConfig } from './EnemyConfig';
 import { TacticalSteeringBehavior } from './TacticalSteeringBehavior';
 import { Enemy } from './Enemy';
+import { EventBus, GameEvents } from './EventBus';
 const { ccclass, property } = _decorator;
 
 export interface NeighborData {
@@ -19,9 +20,11 @@ export class Enemy_Movement_System extends Component {
     private maxTurnForce: number | null = null
     private tacticalSteering: TacticalSteeringBehavior
     private rigidBody: RigidBody2D | null = null
+    private sharedActiveEnemies: Enemy[] = []
 
     protected onLoad(): void {
         this.rigidBody = this.getComponent(RigidBody2D)
+        EventBus.on(GameEvents.WAVE_SPAWNED, this.recieveEnemyArray, this)
     }
 
     public init(maxSpeed: number, movementConfig: MovementConfig) {
@@ -90,10 +93,17 @@ export class Enemy_Movement_System extends Component {
         return this.rigidBody.linearVelocity.lengthSqr() < 10
     }
 
+    public recieveEnemyArray(masterArray: Enemy[]) {
+        this.sharedActiveEnemies = masterArray
+    }
+
     public getNeighborsData(): NeighborData[] {
         let neighbors: NeighborData[] = []
-        for (let otherEnemy of Enemy.activeEnemies) {
-            if (otherEnemy.node === this.node) continue
+
+        if (!this.sharedActiveEnemies || this.sharedActiveEnemies.length === 0) return neighbors
+
+        for (let otherEnemy of this.sharedActiveEnemies) {
+            if (!isValid(otherEnemy) || !otherEnemy.node || otherEnemy.node === this.node) continue
 
             let otherMovement = otherEnemy.getComponent(Enemy_Movement_System) 
             if (!otherMovement) continue
@@ -109,6 +119,10 @@ export class Enemy_Movement_System extends Component {
 
         return neighbors
         
+    }
+
+    protected onDestroy(): void {
+        EventBus.off(GameEvents.WAVE_SPAWNED, this.recieveEnemyArray, this)
     }
 
 
