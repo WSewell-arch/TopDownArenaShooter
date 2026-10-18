@@ -2,6 +2,7 @@ import { _decorator, Component, Game, instantiate, math, Node, NodePool, Prefab,
 import { PowerUpConfig, PowerupType } from './PowerUpConfig';
 import { EventBus, GameEvents } from './EventBus';
 import { Enemy } from './Enemy';
+import { PowerUp } from './PowerUp';
 const { ccclass, property } = _decorator;
 
 interface PowerUpPayLoad {
